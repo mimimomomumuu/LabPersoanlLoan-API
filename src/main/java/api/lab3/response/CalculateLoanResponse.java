@@ -8,6 +8,6 @@ import lombok.Data;
 @Data
 public class CalculateLoanResponse extends BaseResponse {
     
-    private Optional<CalculateLoanDTO> loanDetails;
+    private Optional<CalculateLoanDTO> data;
 
 }

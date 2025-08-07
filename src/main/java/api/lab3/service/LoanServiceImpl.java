@@ -43,7 +43,7 @@ public class LoanServiceImpl implements LoanService {
             if (request.getIncome() < minSalary || request.getIncome() > maxSalary) {
                 response.setResponseCode("0004");
                 response.setResponseMessage("รายได้ไม่อยู่ในช่วงที่สามารถกู้ยืมได้");
-                response.setLoanDetails(Optional.empty()); // ไม่มีข้อมูลเลย //Optional ถูกใช้แทน null เพื่อช่วยป้องกัน NullPointerException
+                response.setData(Optional.empty()); // ไม่มีข้อมูลเลย //Optional ถูกใช้แทน null เพื่อช่วยป้องกัน NullPointerException
                 return response;
             }
 
@@ -57,7 +57,7 @@ public class LoanServiceImpl implements LoanService {
             if (carInterrateRates.isEmpty()) {
                 response.setResponseCode("0004");
                 response.setResponseMessage("ไม่พบข้อมูลวงเงินสินเชื่อสำหรับเกณฑ์ที่กำหนด");
-                response.setLoanDetails(Optional.empty());
+                response.setData(Optional.empty());
                 return response;
             }
 
@@ -72,35 +72,22 @@ public class LoanServiceImpl implements LoanService {
             // Max Loan คือค่าที่น้อยที่สุดระหว่าง calculatedCreditLimit กับ maxLoanConfig
             int finalMaxLoan = Math.min(calculatedCreditLimit.intValue(), maxLoanConfig);
 
-            
-            // สร้าง List ของ LoanDetailDTO โดยแปลงจาก CarInterrateRate
-            List<LoanDetailDTO> loanInstallmentDetails = carInterrateRates.stream()
-                    .map(rate -> {
-                        LoanDetailDTO dto = new LoanDetailDTO();
-                        dto.setNoOfInstallment(rate.getNoOfInstallment());
-                        dto.setCreditLimit(rate.getCreditLimit());
-                        dto.setInterestRate(rate.getInterateRate());
-                        return dto;
-                    })
-                    .collect(Collectors.toList());
-
             // 5. สร้าง CalculateLoanDTO เพื่อรวบรวมข้อมูลทั้งหมด
             CalculateLoanDTO calculateLoanDTO = new CalculateLoanDTO();
             calculateLoanDTO.setMinLoan(minLoanConfig);
             calculateLoanDTO.setMaxLoan(finalMaxLoan);
-            calculateLoanDTO.setLoanInstallmentDetails(loanInstallmentDetails);
 
             // 6. กำหนด Response ให้เป็น Success
             response.setResponseCode("0000");
             response.setResponseMessage("Success");
-            response.setLoanDetails(Optional.of(calculateLoanDTO));
+            response.setData(Optional.of(calculateLoanDTO));
 
         } catch (Exception e) {
             // หากเกิดข้อผิดพลาดอื่น ๆ ที่ไม่คาดคิด
             System.err.println("Error calculating loan limit: " + e.getMessage()); // เพิ่ม Log
             response.setResponseCode("5000");
             response.setResponseMessage("เกิดข้อผิดพลาดในระบบที่ไม่คาดคิด");
-            response.setLoanDetails(Optional.empty());
+            response.setData(Optional.empty());
         }
 
         return response;
