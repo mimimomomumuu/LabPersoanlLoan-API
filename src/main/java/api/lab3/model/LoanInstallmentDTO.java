@@ -5,8 +5,7 @@ import java.math.BigDecimal;
 import lombok.Data;
 
 @Data
-public class LoanDetailDTO {
+public class LoanInstallmentDTO {
     private int noOfInstallment;
-    private BigDecimal creditLimit; 
     private BigDecimal interestRate;
 }

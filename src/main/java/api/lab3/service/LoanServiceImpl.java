@@ -2,7 +2,6 @@ package api.lab3.service;
 
 import api.lab3.entity.CarInterrateRate;
 import api.lab3.model.CalculateLoanDTO;
-import api.lab3.model.LoanDetailDTO; 
 import api.lab3.repository.CarInterrateRateRepository;
 import api.lab3.request.CalculateLoanRequest;
 import api.lab3.response.CalculateLoanResponse;
@@ -10,7 +9,6 @@ import api.lab3.response.CalculateLoanResponse;
 import java.math.BigDecimal; 
 import java.util.List; 
 import java.util.Optional;
-import java.util.stream.Collectors; 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
